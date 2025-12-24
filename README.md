@@ -1,16 +1,15 @@
 # Nhắc nhở sức khỏe - Desktop App
 
-Ứng dụng nhắc nhở uống nước, đứng dậy đi lại khi làm việc. Phiên bản desktop cho Windows.
-
+Ứng dụng nhắc nhở uống nước, đứng dậy đi lại khi làm việc. Phiên bản desktop cho Windows [tại đây](https://remind.asia/download/win/NhacNhoSucKhoe.exe)
 ## Tính năng
 
-- 💧 Nhắc nhở uống nước định kỳ
-- 🚶 Nhắc nhở đứng dậy đi lại
-- ⏰ Hỗ trợ nhắc theo khoảng thời gian hoặc giờ cố định
-- 🌙 Giao diện sáng/tối
-- 🔔 Âm thanh thông báo tùy chỉnh
-- 📌 Chạy nền trong system tray
-- 🚀 Khởi động cùng Windows (tùy chọn)
+-  Nhắc nhở uống nước định kỳ
+-  Nhắc nhở đứng dậy đi lại
+-  Hỗ trợ nhắc theo khoảng thời gian hoặc giờ cố định
+-  Giao diện sáng/tối
+-  Âm thanh thông báo tùy chỉnh
+-  Chạy nền trong system tray
+-  Khởi động cùng Windows (tùy chọn)
 
 ## Cài đặt
 
@@ -43,14 +42,14 @@ File `NhacNhoSucKhoe.exe` sẽ được tạo trong thư mục `dist/`
 ```
 health-reminder-desktop/
 ├── assets/
-│   └── icon.ico          # Icon ứng dụng
+│   └── icon.ico          
 ├── renderer/
-│   ├── index.html        # Giao diện chính
-│   ├── notification.html # Giao diện thông báo
-│   ├── app.js            # Logic UI
-│   └── styles.css        # CSS styles
-├── main.js               # Electron main process
-├── preload.js            # Preload script
+│   ├── index.html       
+│   ├── notification.html 
+│   ├── app.js            
+│   └── styles.css        
+├── main.js              
+├── preload.js          
 └── package.json
 ```
 
