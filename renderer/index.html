@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://remind.asia;">
+  <title>Nhắc nhở sức khỏe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container" id="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <span class="logo">💧</span>
+        <h1>Nhắc nhở sức khỏe</h1>
+      </div>
+      <div class="header-right">
+        <button class="btn-icon" id="themeToggle" title="Chuyển đổi giao diện">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Master Toggle -->
+    <div class="master-toggle">
+      <div class="toggle-info">
+        <span class="toggle-label">Bật nhắc nhở</span>
+        <span class="toggle-status" id="masterStatus">Đang bật</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="masterToggle" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <!-- Tabs - 3 tabs cân đối -->
+    <div class="tabs-wrapper">
+      <div class="tabs tabs-3">
+        <button class="tab active" data-tab="reminders">Nhắc nhở</button>
+        <button class="tab" data-tab="add">Thêm mới</button>
+        <button class="tab" data-tab="settings">Cài đặt</button>
+      </div>
+    </div>
+
+    <!-- Tab Content: Reminders List -->
+    <div class="tab-content active" id="tab-reminders">
+      <div class="reminders-list" id="remindersList">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="empty-state" id="emptyState" style="display: none;">
+        <span class="empty-icon">📝</span>
+        <p>Chưa có nhắc nhở nào</p>
+        <button class="btn btn-primary" onclick="switchTab('add')">Thêm nhắc nhở đầu tiên</button>
+      </div>
+    </div>
+
+    <!-- Tab Content: Add New -->
+    <div class="tab-content" id="tab-add">
+      <form id="addReminderForm" class="form">
+        <div class="form-group">
+          <label for="message">Thông điệp</label>
+          <textarea id="message" placeholder="Nhập thông điệp nhắc nhở..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="iconInput">Biểu tượng</label>
+          <label class="form-hint">Bạn có thể copy biểu tượng bên ngoài mà bạn muốn và dán vào ô dưới đây nhé</label>
+          <div class="icon-picker-wrapper">
+            <input type="text" id="iconInput" value="💧" maxlength="4">
+            <div class="icon-presets">
+              <button type="button" class="icon-preset active" data-icon="💧">💧</button>
+              <button type="button" class="icon-preset" data-icon="🚶">🚶</button>
+              <button type="button" class="icon-preset" data-icon="👀">👀</button>
+              <button type="button" class="icon-preset" data-icon="🧘">🧘</button>
+              <button type="button" class="icon-preset" data-icon="🍎">🍎</button>
+              <button type="button" class="icon-preset" data-icon="☕">☕</button>
+              <button type="button" class="icon-preset" data-icon="🍻">🍻</button>
+              <button type="button" class="icon-preset" data-icon="🚲">🚲</button>
+              <button type="button" class="icon-preset" data-icon="🏊">🏊</button>
+              <button type="button" class="icon-preset" data-icon="🎮">🎮</button>
+              <button type="button" class="icon-preset" data-icon="📽️">📽️</button>
+              <button type="button" class="icon-preset" data-icon="✉️">✉️</button>
+              <button type="button" class="icon-preset" data-icon="💉">💉</button>
+              <button type="button" class="icon-preset" data-icon="👩‍❤️‍👨">👩‍❤️‍👨</button>
+              <button type="button" class="icon-preset" data-icon="🛌">🛌</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="color">Màu sắc thông điệp</label>
+          <div class="color-picker-wrapper">
+            <input type="color" id="color" value="#0ea5e9">
+            <div class="color-presets">
+              <button type="button" class="color-preset" data-color="#0ea5e9" style="background: #0ea5e9"></button>
+              <button type="button" class="color-preset" data-color="#22c55e" style="background: #22c55e"></button>
+              <button type="button" class="color-preset" data-color="#f59e0b" style="background: #f59e0b"></button>
+              <button type="button" class="color-preset" data-color="#ef4444" style="background: #ef4444"></button>
+              <button type="button" class="color-preset" data-color="#8b5cf6" style="background: #8b5cf6"></button>
+              <button type="button" class="color-preset" data-color="#ec4899" style="background: #ec4899"></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Loại nhắc nhở</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="type" value="interval" checked>
+              <span class="radio-custom"></span>
+              <span>Lặp lại theo thời gian</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="type" value="scheduled">
+              <span class="radio-custom"></span>
+              <span>Theo giờ cố định</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group" id="intervalGroup">
+          <label for="interval">Lặp lại mỗi (phút)</label>
+          <div class="interval-input">
+            <input type="number" id="interval" value="30" min="1" max="480">
+            <div class="interval-presets">
+              <button type="button" class="preset-btn" data-interval="15">15p</button>
+              <button type="button" class="preset-btn" data-interval="30">30p</button>
+              <button type="button" class="preset-btn" data-interval="60">1h</button>
+              <button type="button" class="preset-btn" data-interval="120">2h</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" id="scheduledGroup" style="display: none;">
+          <label>Giờ nhắc nhở</label>
+          <div class="time-slots" id="timeSlots">
+            <div class="time-slot">
+              <input type="time" class="time-input" value="08:00">
+              <button type="button" class="btn-remove-time" title="Xóa">×</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="addTimeSlot">
+            + Thêm giờ
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label for="displayDuration">Thời gian hiển thị thông báo (phút)</label>
+          <div class="duration-input">
+            <input type="number" id="displayDuration" value="1" min="1" max="30">
+            <div class="duration-presets">
+              <button type="button" class="duration-btn" data-duration="1">1p</button>
+              <button type="button" class="duration-btn" data-duration="2">2p</button>
+              <button type="button" class="duration-btn" data-duration="3">3p</button>
+              <button type="button" class="duration-btn" data-duration="5">5p</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="testReminder">
+            🔔 Xem trước
+          </button>
+          <button type="submit" class="btn btn-primary">
+            ✔ Lưu nhắc nhở
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Tab Content: Settings -->
+    <div class="tab-content" id="tab-settings">
+      <div class="settings-list">
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-label">Giao diện tối</span>
+            <span class="setting-desc">Dễ nhìn hơn trong điều kiện ánh sáng yếu</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-label">Âm thanh thông báo</span>
+            <span class="setting-desc">Phát âm thanh khi hiển thị nhắc nhở</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="soundToggle" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item" id="volumeControl">
+          <div class="setting-info">
+            <span class="setting-label">Âm lượng thông báo</span>
+            <span class="setting-desc">Điều chỉnh độ to của âm thanh</span>
+          </div>
+          <div class="volume-control">
+            <input type="range" id="volumeSlider" min="0" max="100" value="30" class="volume-slider">
+            <span id="volumeValue" class="volume-value">30%</span>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-label">Khởi động cùng Windows</span>
+            <span class="setting-desc">Tự động chạy khi bật máy tính</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="startWithWindowsToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-label">Khởi động thu nhỏ</span>
+            <span class="setting-desc">Thu nhỏ vào khay hệ thống khi khởi động</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="startMinimizedToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="about-section">
+        <p class="version">Phiên bản 1.1.0</p>
+        <p class="credit">Được tạo với ❤️ bởi noti.vn</p>
+      </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal" id="editModal">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Chỉnh sửa nhắc nhở</h2>
+          <button class="btn-close" id="closeModal">×</button>
+        </div>
+        <form id="editReminderForm" class="form">
+          <input type="hidden" id="editId">
+          
+          <div class="form-group">
+            <label for="editMessage">Thông điệp</label>
+            <textarea id="editMessage" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="editIconInput">Biểu tượng</label>
+            <div class="icon-picker-wrapper">
+              <input type="text" id="editIconInput" maxlength="4">
+              <div class="icon-presets">
+                <button type="button" class="icon-preset" data-icon="💧">💧</button>
+                <button type="button" class="icon-preset" data-icon="🚶">🚶</button>
+                <button type="button" class="icon-preset" data-icon="👀">👀</button>
+                <button type="button" class="icon-preset" data-icon="🧘">🧘</button>
+                <button type="button" class="icon-preset" data-icon="🍎">🍎</button>
+                <button type="button" class="icon-preset" data-icon="☕">☕</button>
+                <button type="button" class="icon-preset" data-icon="🍻">🍻</button>
+                <button type="button" class="icon-preset" data-icon="🚲">🚲</button>
+                <button type="button" class="icon-preset" data-icon="🏊">🏊</button>
+                <button type="button" class="icon-preset" data-icon="🎮">🎮</button>
+                <button type="button" class="icon-preset" data-icon="📽️">📽️</button>
+                <button type="button" class="icon-preset" data-icon="✉️">✉️</button>
+                <button type="button" class="icon-preset" data-icon="💉">💉</button>
+                <button type="button" class="icon-preset" data-icon="👩‍❤️‍👨">👩‍❤️‍👨</button>
+                <button type="button" class="icon-preset" data-icon="🛌">🛌</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="editColor">Màu sắc</label>
+            <div class="color-picker-wrapper">
+              <input type="color" id="editColor">
+              <div class="color-presets">
+                <button type="button" class="color-preset" data-color="#0ea5e9" style="background: #0ea5e9"></button>
+                <button type="button" class="color-preset" data-color="#22c55e" style="background: #22c55e"></button>
+                <button type="button" class="color-preset" data-color="#f59e0b" style="background: #f59e0b"></button>
+                <button type="button" class="color-preset" data-color="#ef4444" style="background: #ef4444"></button>
+                <button type="button" class="color-preset" data-color="#8b5cf6" style="background: #8b5cf6"></button>
+                <button type="button" class="color-preset" data-color="#ec4899" style="background: #ec4899"></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Loại nhắc nhở</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="editType" value="interval">
+                <span class="radio-custom"></span>
+                <span>Lặp lại theo thời gian</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="editType" value="scheduled">
+                <span class="radio-custom"></span>
+                <span>Theo giờ cố định</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group" id="editIntervalGroup">
+            <label for="editInterval">Lặp lại mỗi (phút)</label>
+            <input type="number" id="editInterval" min="1" max="480">
+          </div>
+
+          <div class="form-group" id="editScheduledGroup" style="display: none;">
+            <label>Giờ nhắc nhở</label>
+            <div class="time-slots" id="editTimeSlots"></div>
+            <button type="button" class="btn btn-secondary btn-sm" id="editAddTimeSlot">
+              + Thêm giờ
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label for="editDisplayDuration">Thời gian hiển thị thông báo (phút)</label>
+            <div class="duration-input">
+              <input type="number" id="editDisplayDuration" min="1" max="30">
+              <div class="duration-presets">
+                <button type="button" class="duration-btn" data-duration="1">1p</button>
+                <button type="button" class="duration-btn" data-duration="2">2p</button>
+                <button type="button" class="duration-btn" data-duration="3">3p</button>
+                <button type="button" class="duration-btn" data-duration="5">5p</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="cancelEdit">Hủy</button>
+            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
