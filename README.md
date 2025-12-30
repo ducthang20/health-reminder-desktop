@@ -1,6 +1,6 @@
 # Nhắc nhở sức khỏe - Desktop App
 
-Ứng dụng nhắc nhở uống nước, đứng dậy đi lại khi làm việc. Phiên bản desktop cho Windows [tại đây](https://remind.asia/download/win/NhacNhoSucKhoe.exe)
+Ứng dụng nhắc nhở uống nước, đứng dậy đi lại khi làm việc. Phiên bản desktop cho Windows [tại đây](https://remind.asia/download/win/nhac-nho-suc-khoe-setup-1.0.1.exe)
 ## Tính năng
 
 -  Nhắc nhở uống nước định kỳ
