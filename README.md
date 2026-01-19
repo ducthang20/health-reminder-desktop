@@ -13,7 +13,8 @@
   <a href="#cài-đặt">Cài đặt</a> •
   <a href="#sử-dụng">Sử dụng</a> •
   <a href="#build">Build</a> •
-  <a href="#changelog">Changelog</a>
+  <a href="#changelog">Changelog</a>•
+  <a href="https://remind.asia/download/win/health-reminder-2.0.0.exe">App desktop</a>
 </p>
 
 <p align="center">
@@ -24,12 +25,6 @@
 
 ---
 
-## 📸 Screenshots
-
-<p align="center">
-  <img src="screenshots/main-window.png" alt="Main Window" width="400">
-  <img src="screenshots/notification.png" alt="Notification" width="400">
-</p>
 
 ## ✨ Tính năng
 
