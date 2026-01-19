@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reminder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: transparent;
+      overflow: hidden;
+    }
+
+    /* Notification wrapper = full-screen overlay */
+    .health-reminder-notification {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.96);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .health-reminder-notification.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Backdrop: làm tối & mờ màn hình */
+    .hrn-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(3px);
+    }
+
+    /* Modal (popup) */
+    .hrn-modal {
+      position: relative;
+      max-width: 520px;
+      width: min(520px, 92vw);
+      padding: 24px 24px 32px;
+      border-radius: 18px;
+      box-shadow: 0 22px 45px rgba(15, 23, 42, 0.55);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 35px;
+      overflow: hidden;
+      text-align: center;
+      -webkit-app-region: drag;
+    }
+
+    /* Light theme */
+    .health-reminder-notification.light .hrn-modal {
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    /* Dark theme */
+    .health-reminder-notification.dark .hrn-modal {
+      background: #020617;
+      color: #e2e8f0;
+    }
+
+    /* Icon + pulse */
+    .hrn-icon-wrapper {
+      position: relative;
+      flex-shrink: 0;
+      width: 112px;
+      height: 112px;
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      margin-bottom: 12px;
+    }
+
+    .hrn-icon {
+      font-size: 60px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hrn-pulse {
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      opacity: 0.9;
+      filter: blur(12px);
+      animation: hrn-pulse 1.6s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    @keyframes hrn-pulse {
+      0% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.12); opacity: 0.4; }
+      100% { transform: scale(1); opacity: 0.9; }
+    }
+
+    /* Content */
+    .hrn-content {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hrn-message {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .hrn-time {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 20px;
+    }
+
+    .health-reminder-notification.dark .hrn-time {
+      color: #94a3b8;
+    }
+
+    /* Image wrapper */
+    .hrn-image-wrapper {
+      width: calc(100% - 100px);
+      margin: 16px 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .hrn-version-image {
+      max-width: 100%;
+      max-height: 200px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    /* Close button */
+    .hrn-dismiss {
+      -webkit-app-region: no-drag;
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.06);
+      color: #64748b;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .health-reminder-notification.dark .hrn-dismiss {
+      background: rgba(15, 23, 42, 0.55);
+      color: #cbd5e1;
+    }
+
+    .hrn-dismiss:hover {
+      background: rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .health-reminder-notification.dark .hrn-dismiss:hover {
+      background: rgba(15, 23, 42, 0.85);
+    }
+
+    .hrn-dismiss svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Progress bar */
+    .hrn-progress {
+      position: absolute;
+      inset-inline: 0;
+      bottom: 0;
+      height: 8px;
+      background: rgba(148, 163, 184, 0.35);
+      overflow: hidden;
+    }
+
+    .health-reminder-notification.dark .hrn-progress {
+      background: rgba(30, 64, 175, 0.55);
+    }
+
+    .hrn-progress-bar {
+      width: 100%;
+      height: 100%;
+      transform-origin: left;
+      animation-name: hrn-progress;
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes hrn-progress {
+      from { transform: scaleX(1); }
+      to   { transform: scaleX(0); }
+    }
+
+    /* Pause progress khi hover */
+    .health-reminder-notification.paused .hrn-progress-bar {
+      animation-play-state: paused;
+    }
+  </style>
+</head>
+<body>
+  <div class="health-reminder-notification light" id="notification">
+    <div class="hrn-backdrop"></div>
+    <div class="hrn-modal">
+      <!-- Close button -->
+      <button class="hrn-dismiss" id="closeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      
+      <!-- Icon with pulse -->
+      <div class="hrn-icon-wrapper" id="iconWrapper">
+        <div class="hrn-pulse" id="iconPulse"></div>
+        <span class="hrn-icon" id="notificationIcon">💧</span>
+      </div>
+      
+      <!-- Content -->
+      <div class="hrn-content">
+        <div class="hrn-message" id="notificationMessage">Reminder message</div>
+        
+        <!-- Image (optional) -->
+        <div class="hrn-image-wrapper" id="imageWrapper" style="display: none;">
+          <img class="hrn-version-image" id="notificationImage">
+        </div>
+        
+        <div class="hrn-time" id="notificationTime"></div>
+      </div>
+      
+      <!-- Progress bar -->
+      <div class="hrn-progress">
+        <div class="hrn-progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio element for notification sound -->
+  <audio id="notificationSound" preload="auto"></audio>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+    const path = require('path');
+    
+    let isPaused = false;
+    
+    // Set audio source with absolute path
+    const audioEl = document.getElementById('notificationSound');
+    audioEl.src = path.join(__dirname, 'sounds', 'notification.wav');
+    
+    // Receive reminder data
+    ipcRenderer.on('show-reminder', (event, reminder) => {
+      const notification = document.getElementById('notification');
+      const iconWrapper = document.getElementById('iconWrapper');
+      const iconPulse = document.getElementById('iconPulse');
+      const icon = document.getElementById('notificationIcon');
+      const message = document.getElementById('notificationMessage');
+      const imageWrapper = document.getElementById('imageWrapper');
+      const image = document.getElementById('notificationImage');
+      const time = document.getElementById('notificationTime');
+      const progressBar = document.getElementById('progressBar');
+      
+      // Get color
+      const color = reminder.color || '#0ea5e9';
+      
+      // Set icon wrapper background with transparency
+      iconWrapper.style.backgroundColor = color + '20';
+      iconPulse.style.backgroundColor = color;
+      
+      // Set icon
+      icon.textContent = reminder.icon || '🔔';
+      
+      // Set message with color
+      message.textContent = reminder.message || 'Reminder';
+      message.style.color = color;
+      
+      // Set image if provided
+      if (reminder.imageUrl) {
+        image.src = reminder.imageUrl;
+        imageWrapper.style.display = 'flex';
+        image.onerror = () => { imageWrapper.style.display = 'none'; };
+      } else {
+        imageWrapper.style.display = 'none';
+      }
+      
+      // Set time
+      const now = new Date();
+      time.textContent = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+      
+      // Set progress bar color and duration
+      const duration = (reminder.displayMinutes || 1) * 60;
+      progressBar.style.backgroundColor = color;
+      progressBar.style.animationDuration = duration + 's';
+      
+      // Detect dark mode
+      const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      notification.className = 'health-reminder-notification ' + (isDark ? 'dark' : 'light');
+      
+      // Show notification with animation
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 50);
+      
+      // Pause on hover
+      notification.addEventListener('mouseenter', () => {
+        notification.classList.add('paused');
+        isPaused = true;
+      });
+      
+      notification.addEventListener('mouseleave', () => {
+        notification.classList.remove('paused');
+        isPaused = false;
+      });
+    });
+    
+    // Play sound
+    ipcRenderer.on('play-sound', (event, volume) => {
+      const audio = document.getElementById('notificationSound');
+      if (audio) {
+        audio.volume = Math.min((volume || 100) / 100, 1);
+        audio.currentTime = 0;
+        
+        // Wait a bit for the audio to be ready
+        setTimeout(() => {
+          audio.play().then(() => {
+            console.log('Sound played successfully');
+          }).catch(err => {
+            console.log('Sound error:', err);
+            // Try playing again after a short delay
+            setTimeout(() => {
+              audio.play().catch(e => console.log('Retry failed:', e));
+            }, 100);
+          });
+        }, 100);
+      }
+    });
+    
+    // Close button
+    document.getElementById('closeBtn').addEventListener('click', () => {
+      ipcRenderer.send('close-notification');
+    });
+    
+    // Click backdrop to close
+    document.querySelector('.hrn-backdrop').addEventListener('click', () => {
+      ipcRenderer.send('close-notification');
+    });
+  </script>
+</body>
+</html>

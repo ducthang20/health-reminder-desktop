@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Reminder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <img src="icons/icon48.png" alt="Logo" class="logo-img">
+          <span class="logo-text" data-i18n="appTitle">Health Reminder</span>
+        </div>
+      </div>
+      
+      <nav class="nav-items">
+        <button class="nav-item active" data-tab="reminders">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span data-i18n="tabReminders">Reminders</span>
+        </button>
+        <button class="nav-item" data-tab="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+          <span data-i18n="tabSettings">Settings</span>
+        </button>
+      </nav>
+      
+      <div class="nav-footer">
+        <div class="sidebar-actions">
+          <!-- Language Toggle -->
+          <button class="action-btn" id="langToggle" title="Switch language">
+            <svg class="flag-en" viewBox="0 0 36 36" width="20" height="20">
+              <rect fill="#B22234" width="36" height="36"/>
+              <rect fill="#FFF" y="2.77" width="36" height="2.77"/>
+              <rect fill="#FFF" y="8.31" width="36" height="2.77"/>
+              <rect fill="#FFF" y="13.85" width="36" height="2.77"/>
+              <rect fill="#FFF" y="19.38" width="36" height="2.77"/>
+              <rect fill="#FFF" y="24.92" width="36" height="2.77"/>
+              <rect fill="#FFF" y="30.46" width="36" height="2.77"/>
+              <rect fill="#3C3B6E" width="14.4" height="19.38"/>
+            </svg>
+            <svg class="flag-vi" viewBox="0 0 36 36" width="20" height="20" style="display: none;">
+              <rect fill="#DA251D" width="36" height="36"/>
+              <polygon fill="#FFFF00" points="18,7.2 20.47,14.11 27.72,14.11 21.62,18.49 24.09,25.4 18,21.02 11.91,25.4 14.38,18.49 8.28,14.11 15.53,14.11"/>
+            </svg>
+          </button>
+          <!-- Theme Toggle -->
+          <button class="action-btn" id="themeToggle" title="Toggle theme">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Reminders Tab -->
+      <div class="tab-content active" id="tab-reminders">
+        <div class="page-header">
+          <div class="page-title">
+            <h1 data-i18n="tabReminders">Reminders</h1>
+            <p class="subtitle" data-i18n="remindersSubtitle">Manage your health reminders</p>
+          </div>
+          <div class="header-actions">
+            <label class="master-switch">
+              <input type="checkbox" id="masterToggle" checked>
+              <div class="switch-track"><div class="switch-thumb"></div></div>
+              <span class="switch-label" id="masterStatus" data-i18n="statusEnabled">Enabled</span>
+            </label>
+            <button class="btn btn-primary" id="addReminderBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              <span data-i18n="addReminder">Add</span>
+            </button>
+          </div>
+        </div>
+        <div class="reminders-container" id="remindersList"></div>
+        <div class="empty-state" id="emptyReminders" style="display: none;">
+          <div class="empty-icon">🔔</div>
+          <h3 data-i18n="noReminders">No reminders yet</h3>
+          <p data-i18n="addFirstReminder">Add your first reminder</p>
+          <button class="btn btn-primary" id="emptyAddReminder" data-i18n="addReminder">Add Reminder</button>
+        </div>
+      </div>
+
+      <!-- Settings Tab -->
+      <div class="tab-content" id="tab-settings">
+        <div class="page-header">
+          <div class="page-title">
+            <h1 data-i18n="tabSettings">Settings</h1>
+            <p class="subtitle" data-i18n="settingsSubtitle">Customize application</p>
+          </div>
+        </div>
+        <div class="settings-container">
+          <div class="settings-group">
+            <h3 data-i18n="appearance">🎨 Appearance</h3>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label" data-i18n="darkMode">Dark mode</span>
+                <span class="setting-desc" data-i18n="darkModeDesc">Easier on eyes</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label" data-i18n="language">Language</span>
+                <span class="setting-desc" data-i18n="languageDesc">Select language</span>
+              </div>
+              <select class="select-input" id="languageSelect">
+                <option value="en">English</option>
+                <option value="vi">Tiếng Việt</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="settings-group">
+            <h3 data-i18n="notifications">🔔 Notifications</h3>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label" data-i18n="soundNotification">Sound</span>
+                <span class="setting-desc" data-i18n="soundDesc">Play sound</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="soundToggle" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label" data-i18n="notificationVolume">Volume</span>
+                <span class="setting-desc" data-i18n="volumeDesc">Adjust volume</span>
+              </div>
+              <div class="volume-control">
+                <input type="range" class="range-input" id="volumeSlider" min="0" max="200" value="100">
+                <span id="volumeValue">100%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <h3 data-i18n="system">⚙️ System</h3>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label" data-i18n="autoStart">Start with Windows</span>
+                <span class="setting-desc" data-i18n="autoStartDesc">Launch app when Windows starts</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="autoStartToggle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <h3 data-i18n="dataManagement">💾 Data</h3>
+            <div class="data-actions">
+              <button class="btn btn-secondary" id="exportData">
+                <span data-i18n="exportData">Export</span>
+              </button>
+              <button class="btn btn-secondary" id="importData">
+                <span data-i18n="importData">Import</span>
+              </button>
+              <button class="btn btn-danger" id="resetData">
+                <span data-i18n="resetAll">Reset</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <h3 data-i18n="about">ℹ️ About</h3>
+            <div class="about-info">
+              <div class="about-row">
+                <span data-i18n="version">Version</span>
+                <span>1.0.0</span>
+              </div>
+              <div class="about-row">
+                <span data-i18n="createdBy">Created by</span>
+                <a href="https://noti.vn" target="_blank">noti.vn</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Reminder Modal -->
+  <div class="modal" id="reminderModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 id="reminderModalTitle" data-i18n="addReminder">Add Reminder</h2>
+        <button class="modal-close" id="closeReminderModal">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="reminderForm">
+          <input type="hidden" id="reminderId">
+          
+          <div class="form-group">
+            <label data-i18n="message">Message</label>
+            <textarea id="reminderMessage" rows="2" required data-i18n-placeholder="enterMessage" placeholder="Enter message..."></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label data-i18n="icon">Icon</label>
+            <div class="picker-row">
+              <input type="text" class="selected-preview icon-preview" id="selectedIconPreview" value="💧" maxlength="2">
+              <div class="icon-presets" id="reminderIconPicker">
+                <button type="button" class="icon-btn active" data-icon="💧">💧</button>
+                <button type="button" class="icon-btn" data-icon="🚶">🚶</button>
+                <button type="button" class="icon-btn" data-icon="👁️">👁️</button>
+                <button type="button" class="icon-btn" data-icon="🧘">🧘</button>
+                <button type="button" class="icon-btn" data-icon="💪">💪</button>
+                <button type="button" class="icon-btn" data-icon="🍎">🍎</button>
+                <button type="button" class="icon-btn" data-icon="📢">📢</button>
+                <button type="button" class="icon-btn" data-icon="🍻">🍻</button>
+              </div>
+              <button type="button" class="btn-more" id="moreEmojiBtn" title="More emoji">⋯</button>
+            </div>
+            <input type="hidden" id="reminderIcon" value="💧">
+          </div>
+          
+          <div class="form-group">
+            <label data-i18n="messageColor">Color</label>
+            <div class="picker-row">
+              <div class="color-preview-wrapper">
+                <div class="selected-preview color-preview" id="selectedColorPreview" style="background: #0ea5e9;"></div>
+                <input type="color" class="color-input-hidden" id="customColorPicker" value="#0ea5e9">
+              </div>
+              <div class="color-presets" id="reminderColorPicker">
+                <button type="button" class="color-btn active" data-color="#0ea5e9" style="background: #0ea5e9;"></button>
+                <button type="button" class="color-btn" data-color="#22c55e" style="background: #22c55e;"></button>
+                <button type="button" class="color-btn" data-color="#f59e0b" style="background: #f59e0b;"></button>
+                <button type="button" class="color-btn" data-color="#ef4444" style="background: #ef4444;"></button>
+                <button type="button" class="color-btn" data-color="#8b5cf6" style="background: #8b5cf6;"></button>
+                <button type="button" class="color-btn" data-color="#ec4899" style="background: #ec4899;"></button>
+              </div>
+              <button type="button" class="btn-more" id="moreColorBtn" title="More colors">⋯</button>
+            </div>
+            <input type="hidden" id="reminderColor" value="#0ea5e9">
+          </div>
+          
+          <div class="form-group">
+            <label data-i18n="imageUrl">Image URL (optional)</label>
+            <input type="text" id="reminderImageUrl" data-i18n-placeholder="imageUrlPlaceholder" placeholder="https://example.com/image.png">
+            <small class="form-hint" data-i18n="imageUrlHint">Supported: .png, .jpg, .jpeg, .gif, .webp, .svg</small>
+          </div>
+          
+          <div class="form-group">
+            <label data-i18n="reminderType">Type</label>
+            <div class="type-selector">
+              <label class="type-option">
+                <input type="radio" name="reminderType" value="interval" checked>
+                <div class="type-card">
+                  <span class="type-icon">🔁</span>
+                  <span class="type-label" data-i18n="repeatByInterval">Interval</span>
+                </div>
+              </label>
+              <label class="type-option">
+                <input type="radio" name="reminderType" value="scheduled">
+                <div class="type-card">
+                  <span class="type-icon">⏰</span>
+                  <span class="type-label" data-i18n="atFixedTime">Fixed time</span>
+                </div>
+              </label>
+              <label class="type-option">
+                <input type="radio" name="reminderType" value="dateRange">
+                <div class="type-card">
+                  <span class="type-icon">📅</span>
+                  <span class="type-label" data-i18n="dateRange">Date Range</span>
+                </div>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-group" id="intervalGroup">
+            <label data-i18n="repeatEveryMinutes">Repeat (minutes)</label>
+            <div class="interval-input">
+              <input type="number" id="reminderInterval" value="30" min="1">
+              <div class="interval-presets" id="intervalPresets">
+                <button type="button" class="preset-btn" data-value="15">15</button>
+                <button type="button" class="preset-btn active" data-value="30">30</button>
+                <button type="button" class="preset-btn" data-value="60">60</button>
+                <button type="button" class="preset-btn" data-value="90">90</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group" id="scheduledGroup" style="display: none;">
+            <label data-i18n="reminderTimes">Times</label>
+            <div class="time-slots" id="timeSlots"></div>
+            <button type="button" class="btn btn-sm btn-secondary" id="addTimeSlot">+ <span data-i18n="addTime">Add</span></button>
+          </div>
+          
+          <div class="form-group" id="dateRangeGroup" style="display: none;">
+            <label data-i18n="dateRangeSettings">Date Range Settings</label>
+            <div class="date-range-inputs">
+              <div class="date-range-row">
+                <label data-i18n="fromDate">From</label>
+                <input type="date" id="dateRangeFrom">
+                <label data-i18n="toDate">To</label>
+                <input type="date" id="dateRangeTo">
+              </div>
+              <div class="date-range-times-section">
+                <label data-i18n="timeSlots">Time slots</label>
+                <div class="date-range-times-list" id="dateRangeTimesList"></div>
+                <div class="date-range-add-time">
+                  <input type="time" id="dateRangeTimeInput" value="09:00">
+                  <button type="button" class="btn btn-sm btn-secondary" id="addDateRangeTime">+</button>
+                </div>
+              </div>
+            </div>
+            <div class="weekday-picker" id="weekdayPicker">
+              <button type="button" class="weekday-btn" data-day="0" data-i18n="sun">Sun</button>
+              <button type="button" class="weekday-btn active" data-day="1" data-i18n="mon">Mon</button>
+              <button type="button" class="weekday-btn active" data-day="2" data-i18n="tue">Tue</button>
+              <button type="button" class="weekday-btn active" data-day="3" data-i18n="wed">Wed</button>
+              <button type="button" class="weekday-btn active" data-day="4" data-i18n="thu">Thu</button>
+              <button type="button" class="weekday-btn active" data-day="5" data-i18n="fri">Fri</button>
+              <button type="button" class="weekday-btn" data-day="6" data-i18n="sat">Sat</button>
+            </div>
+            <div class="date-range-summary" id="dateRangeSummary">
+              <em data-i18n="selectDateRange">Select date range to see summary</em>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label data-i18n="displayDuration">Display (minutes)</label>
+            <div class="duration-input">
+              <input type="number" id="displayDuration" value="1" min="1">
+              <div class="duration-presets" id="durationPresets">
+                <button type="button" class="preset-btn active" data-value="1">1</button>
+                <button type="button" class="preset-btn" data-value="2">2</button>
+                <button type="button" class="preset-btn" data-value="5">5</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="previewReminder">
+              👁️ <span data-i18n="preview">Preview</span>
+            </button>
+            <button type="submit" class="btn btn-primary">
+              ✓ <span data-i18n="saveReminder">Save</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reminder Detail Modal -->
+  <div class="modal" id="reminderDetailModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 data-i18n="reminderDetail">Reminder Detail</h2>
+        <button class="modal-close" id="closeReminderDetailModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="reminder-detail-content" id="reminderDetailContent"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="reminderDetailClose" data-i18n="close">Close</button>
+        <button type="button" class="btn btn-primary" id="reminderDetailEdit" data-i18n="edit">Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emoji Picker Modal -->
+  <div class="modal" id="emojiPickerModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h2 data-i18n="selectEmoji">Select Emoji</h2>
+        <button class="modal-close" id="closeEmojiModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="emoji-categories" id="emojiCategories">
+          <button type="button" class="emoji-category-btn active" data-category="smileys">😀</button>
+          <button type="button" class="emoji-category-btn" data-category="people">👋</button>
+          <button type="button" class="emoji-category-btn" data-category="nature">🌿</button>
+          <button type="button" class="emoji-category-btn" data-category="food">🍔</button>
+          <button type="button" class="emoji-category-btn" data-category="activities">⚽</button>
+          <button type="button" class="emoji-category-btn" data-category="travel">🚗</button>
+          <button type="button" class="emoji-category-btn" data-category="objects">💡</button>
+          <button type="button" class="emoji-category-btn" data-category="symbols">❤</button>
+        </div>
+        <div class="emoji-grid" id="emojiGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Color Picker Modal -->
+  <div class="modal" id="colorPickerModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 data-i18n="selectColor">Select Color</h2>
+        <button class="modal-close" id="closeColorModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="color-palette" id="colorPalette"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Audio element for notification sound -->
+  <audio id="notificationSound" src="sounds/notification.wav" preload="auto"></audio>
+
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
